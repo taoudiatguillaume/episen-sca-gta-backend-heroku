@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.episen.sca.model.Student;
@@ -26,8 +27,24 @@ public class StudentController {
 	}
 
 	@PostMapping("addstudent")
-	public Student createOrUpdate(@RequestBody Student order){
-		return studentRepository.save(order);
+	public Student createStudent(@RequestBody Student s){
+		return studentRepository.save(s);
+	}
+
+	@PutMapping("editstudent/{id}")
+	public Student updateStudent(@PathVariable("id") Long studentId, @RequestBody Student s){
+		if(studentRepository.findById(studentId).isPresent()){
+			Student s2 = studentRepository.findById(studentId).get();
+			s2.setFirstname(s.getFirstname());
+			s2.setLastname(s.getLastname());
+			s2.setEmail(s.getEmail());
+			s2.setAge(s.getAge());
+			s2.setGender(s.getGender());
+			s2.setGroups(s.getGroups());
+			s2.setRedoublant(s.isRedoublant());
+			Student updatedStudent = studentRepository.save(s2);
+			return updatedStudent;
+		}else{return null;}
 	}
 
 	@DeleteMapping("delete/{id}")
