@@ -25,7 +25,7 @@ public class StudentController {
 		return this.studentRepository.findAll();
 	}
 
-	@PostMapping("adduser")
+	@PostMapping("addstudent")
 	public Student createOrUpdate(@RequestBody Student order){
 		return studentRepository.save(order);
 	}
